@@ -1,0 +1,61 @@
+name: Import Android project ZIP
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-project:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Extract Android project
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ARCHIVE="Christmas-GSD-Projectivy-Android-Project.zip"
+
+          if [[ ! -f "$ARCHIVE" ]]; then
+            echo "::error::Could not find $ARCHIVE in the repository root."
+            exit 1
+          fi
+
+          mkdir -p "$RUNNER_TEMP/project-zip"
+          unzip -q "$ARCHIVE" -d "$RUNNER_TEMP/project-zip"
+
+          PROJECT_ROOT="$(find "$RUNNER_TEMP/project-zip" -type f -name gradlew -print -quit | xargs -r dirname)"
+
+          if [[ -z "$PROJECT_ROOT" ]]; then
+            echo "::error::No gradlew file was found in the ZIP. Check that this is the Android Studio project archive."
+            exit 1
+          fi
+
+          # Copy the Android project contents into the repository root,
+          # preserving folders and hidden files.
+          cp -a "$PROJECT_ROOT"/. .
+
+          chmod +x ./gradlew
+          rm -f "$ARCHIVE"
+
+      - name: Commit imported project
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Import Christmas GSD Projectivy Android project"
+            git push
+          fi
