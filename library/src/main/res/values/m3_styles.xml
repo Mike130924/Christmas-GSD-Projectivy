@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Blueprint.Default.MaterialYou" parent="Frames.Default.MaterialYou">
+        <item name="bottomNavigationStyle">
+            @style/Widget.Blueprint.BottomNavigationView.MaterialYou
+        </item>
+        <item name="navigationViewStyle">@style/Widget.Blueprint.NavigationView.MaterialYou</item>
+    </style>
+
+    <style name="Blueprint.Default.Amoled.MaterialYou" parent="Frames.Default.Amoled.MaterialYou">
+        <item name="bottomNavigationStyle">
+            @style/Widget.Blueprint.BottomNavigationView.MaterialYou
+        </item>
+        <item name="navigationViewStyle">@style/Widget.Blueprint.NavigationView.Amoled.MaterialYou
+        </item>
+    </style>
+
+    <style name="Widget.Blueprint.BottomNavigationView.MaterialYou" parent="Widget.Frames.BottomNavigationView.MaterialYou">
+        <item name="itemIconTint">@drawable/bottom_navigation_states</item>
+        <item name="itemTextColor">@drawable/bottom_navigation_states</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <style name="Widget.Blueprint.NavigationView.MaterialYou" parent="Widget.Frames.NavigationView.MaterialYou">
+        <item name="itemTextColor">@color/navigation_item_text_color</item>
+        <item name="itemIconTint">@color/navigation_item_text_color</item>
+        <item name="itemShapeFillColor">@color/navigation_item_bg_color</item>
+        <item name="android:background">?colorSurface</item>
+    </style>
+
+    <style name="Widget.Blueprint.NavigationView.Amoled.MaterialYou" parent="Widget.Blueprint.NavigationView.MaterialYou" />
+
+</resources>

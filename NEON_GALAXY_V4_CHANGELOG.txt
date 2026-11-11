@@ -1,0 +1,8 @@
+NEON GALAXY COSMIC GLASS V4
+
+- Version name 1.3.0, version code 4.
+- Preserves the V3 fixed project and its existing icon artwork/mappings.
+- Adds 14 new 512x512 Cosmic Glass main icons as individual drawable-nodpi resources.
+- Adds separate unassigned icon-pack entries for manual selection in Projectivy.
+- The 14 new icons are not automatically assigned to apps; select them manually in Projectivy.
+- Existing mapped icons and appfilter entries are retained.

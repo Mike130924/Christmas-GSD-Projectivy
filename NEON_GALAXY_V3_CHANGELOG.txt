@@ -1,0 +1,19 @@
+NEON GALAXY COSMIC GLASS — VERSION 3
+
+V3 changes
+- Replaced generic sample icon previews with the real Neon Galaxy icon artwork.
+- Updated the selectable icon catalogue to include all 37 original entries plus Stremio and Google Play Store as optional extras (39 selectable icons).
+- Kept the 36 existing automatic app mappings unchanged. Stremio and Google Play Store are selectable extras only; no package mapping is claimed for them.
+- Updated Arcticons, Projectivy Weather, Overflight, Browser and Projectivy Blueprint artwork to the latest approved versions.
+- Added Stremio and Google Play Store artwork.
+- Reduced unnecessary image padding in the icon picker for larger previews.
+- Corrected internal app metadata to Neon Galaxy version 1.2.0 / versionCode 3.
+- Updated GitHub Actions workflow to publish the V3 APK artifact.
+
+Not included
+- Unconfirmed app 36/37 candidates are not invented.
+- Incorrect off-list generations (Zurg, Tubi, VLC duplicate and Plex) are excluded.
+- Existing Syncler and Syncler Beta artwork/mappings are preserved.
+
+Build command: ./gradlew :app:assembleDebug
+Expected APK: app/build/outputs/apk/debug/uk.neongalaxy.projectivy-v1.2.0-debug.apk

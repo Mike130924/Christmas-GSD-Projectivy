@@ -1,0 +1,14 @@
+NEON GALAXY COSMIC GLASS — ICON INTEGRATION
+
+35 approved master icons replaced existing mapped app artwork.
+1 BBC/YouView mapped icon retained from the previous project because no BBC master PNG was supplied.
+1 Browser icon added as an extra selectable picker icon (no automatic app mapping asserted).
+
+Validation:
+- appfilter.xml: 36 mappings, zero missing drawable files.
+- drawable.xml: 37 selectable entries, zero missing drawable files.
+- Android res/xml copies synchronized with assets XML.
+- Theme metadata updated to Neon Galaxy 1.1.0 / version code 2.
+
+Build status:
+The Gradle build was attempted but could not start because this environment could not reach services.gradle.org to download Gradle 9.6.0. No APK has been produced in this session.

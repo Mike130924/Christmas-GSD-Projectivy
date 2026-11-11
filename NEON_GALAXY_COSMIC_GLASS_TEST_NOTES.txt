@@ -1,0 +1,21 @@
+NEON GALAXY COSMIC GLASS TEST BUILD
+
+This archive contains the Android/Projectivy project and the existing package
+mappings. Individual Cosmic Glass artwork has been inserted wherever a
+matching package-specific master PNG was available.
+
+Artwork replacement count: 29
+Package-specific icon mapping count: 36
+
+The following mapped icons did not have a matching individual master artwork
+file in the working assets and therefore retain the previous artwork:
+- com_cybercat_adbappcontrol_tv
+- com_donnnno_arcticons_daynight
+- dev_projectivy_blueprint_app
+- moe_shizuku_privileged_api
+- tv_projectivy_plugin_wallpaperprovider_overflight
+- tv_projectivy_plugin_wallpaperprovider_weather
+- tv_wuaki_apptv
+
+This is a test project archive, not an already-built APK. Build it with the
+matching GitHub Actions workflow. Verify the icon appearance on the target TV.

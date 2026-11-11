@@ -1,0 +1,14 @@
+NEON GALAXY COSMIC GLASS V3 - ICON INTEGRATION STATUS
+
+'
+'Individual selectable app icons are stored in app/src/main/res/drawable-nodpi/ and referenced by app/src/main/assets/appfilter.xml.
+'
+'Updated mapped drawable PNGs from the approved 1024x1024 master artwork: 32.
+'
+'Preserved byte-for-byte as requested: LocalSend, Unlinked, Syncler, Syncler Beta.
+'
+'BBC iPlayer remains on its existing artwork because no approved BBC iPlayer master PNG was present in the supplied master collection.
+'
+'Browser artwork is included as neon_galaxy_browser.png, but its appfilter component mapping is intentionally not guessed. Add the exact installed Browser package/component before claiming the 37th app is selectable.
+'
+'Existing appfilter entries validated: 36; missing drawable resources: 0.

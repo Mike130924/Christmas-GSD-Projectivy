@@ -1,0 +1,26 @@
+group = 'dev.jahir'
+
+// build a jar with source files
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.directories
+    from android.sourceSets.main.kotlin.directories
+    archiveClassifier.set('sources')
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.directories
+    classpath += project.files(androidComponents.sdkComponents.bootClasspath)
+    // classpath += configurations.compile
+}
+
+// build a jar with javadoc
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}

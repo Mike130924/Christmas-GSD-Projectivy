@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
+    <string-array name="icons_preview">
+        <item>com_alphainventor_filemanager</item>
+        <item>com_amazon_amazonvideo_livingroom</item>
+        <item>com_apple_atve_sony_appletv</item>
+        <item>com_brouken_player_legacy</item>
+        <item>com_channel5_my5sony</item>
+        <item>com_crunchyroll_crunchyroid</item>
+        <item>com_cybermedia_cyberflix</item>
+        <item>com_disney_disneyplus</item>
+        <item>com_esaba_downloader</item>
+        <item>com_expressvpn_vpn</item>
+        <item>com_google_android_youtube_tv</item>
+        <item>com_itv_youviewandroidlauncher</item>
+        <item>com_mxtech_videoplayer_pro</item>
+        <item>com_netflix_ninja</item>
+        <item>com_playstation_remoteplay_tv</item>
+    </string-array>
+    <string-array name="icon_filters">
+        <item>all</item>
+    </string-array>
+    <string-array name="all">
+        <item>com_alphainventor_filemanager</item>
+        <item>com_amazon_amazonvideo_livingroom</item>
+        <item>com_apple_atve_sony_appletv</item>
+        <item>com_brouken_player_legacy</item>
+        <item>com_channel5_my5sony</item>
+        <item>com_crunchyroll_crunchyroid</item>
+        <item>com_cybermedia_cyberflix</item>
+        <item>com_disney_disneyplus</item>
+        <item>com_esaba_downloader</item>
+        <item>com_expressvpn_vpn</item>
+        <item>com_google_android_youtube_tv</item>
+        <item>com_itv_youviewandroidlauncher</item>
+        <item>com_mxtech_videoplayer_pro</item>
+        <item>com_netflix_ninja</item>
+        <item>com_playstation_remoteplay_tv</item>
+        <item>com_sonypicturescore</item>
+        <item>com_spocky_projectmenu</item>
+        <item>com_syncler</item>
+        <item>com_syncler_beta</item>
+        <item>com_youview_tv_bbc</item>
+        <item>dev_vodik7_tvquickactions_free</item>
+        <item>flix_com_vision</item>
+        <item>io_gh_reisxd_tizentube_cobalt</item>
+        <item>link_unlinked</item>
+        <item>org_localsend_localsend_app</item>
+        <item>org_smarttube_beta</item>
+        <item>org_smarttube_stable</item>
+        <item>org_videolan_vlc</item>
+        <item>za_kilowatch_ultimatefilemanager_foss</item>
+        <item>tv_wuaki_apptv</item>
+        <item>dev_projectivy_blueprint_app</item>
+        <item>com_donnnno_arcticons_daynight</item>
+        <item>tv_projectivy_plugin_wallpaperprovider_weather</item>
+        <item>tv_projectivy_plugin_wallpaperprovider_overflight</item>
+        <item>moe_shizuku_privileged_api</item>
+        <item>com_cybercat_adbappcontrol_tv</item>
+        <item>neon_galaxy_browser</item>
+        <item>neon_galaxy_stremio</item>
+        <item>neon_galaxy_google_play_store</item>
+    </string-array>
+</resources>

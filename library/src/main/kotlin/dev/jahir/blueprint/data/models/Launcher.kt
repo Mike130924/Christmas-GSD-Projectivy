@@ -1,0 +1,182 @@
+package dev.jahir.blueprint.data.models
+
+import android.content.Context
+import androidx.annotation.DrawableRes
+import dev.jahir.blueprint.R
+import dev.jahir.blueprint.extensions.blueprintFormat
+import dev.jahir.blueprint.extensions.clean
+import dev.jahir.frames.extensions.context.stringArray
+import dev.jahir.kuper.extensions.isAppInstalled
+
+@Suppress("ArrayInDataClass", "unused")
+enum class Launcher(
+    val key: String,
+    val appName: String,
+    val packageNames: Array<String>,
+    @DrawableRes val icon: Int,
+    val isActuallySupported: Boolean = true,
+    // No longer on the Play Store, so it is only listed for people who still have it installed
+    val showOnlyIfInstalled: Boolean = false
+) {
+    ACTION(
+        "action",
+        "Action Launcher",
+        arrayOf("com.actionlauncher.playstore"),
+        R.drawable.ic_action
+    ),
+    ADW(
+        "adw",
+        "ADW Launcher",
+        arrayOf("org.adw.launcher"),
+        R.drawable.ic_adw,
+        showOnlyIfInstalled = true
+    ),
+    ADW_EX(
+        "adwex",
+        "ADW Ex Launcher",
+        arrayOf("org.adwfreak.launcher"),
+        R.drawable.ic_adw_ex,
+        showOnlyIfInstalled = true
+    ),
+    AIO("aio", "AIO Launcher", arrayOf("ru.execbit.aiolauncher"), R.drawable.ic_aio),
+    APEX(
+        "apex",
+        "Apex Launcher",
+        arrayOf("com.anddoes.launcher"),
+        R.drawable.ic_apex,
+        showOnlyIfInstalled = true
+    ),
+    GIP("gip", "Global Icon Pack", arrayOf("com.richardluo.globalIconPack"), R.drawable.ic_gip),
+    GO("go", "Go Launcher", arrayOf("com.gau.go.launcherex"), R.drawable.ic_go),
+    GOOGLE_NOW(
+        "googlenow",
+        "Google Now Launcher",
+        arrayOf("com.google.android.launcher"),
+        R.drawable.ic_google_now,
+        false
+    ),
+    HOLO(
+        "holo",
+        "Holo Launcher",
+        arrayOf("com.mobint.hololauncher"),
+        R.drawable.ic_holo,
+        showOnlyIfInstalled = true
+    ),
+    HOLO_ICS(
+        "holoics",
+        "Holo Launcher ICS",
+        arrayOf("com.mobint.hololauncher.hd"),
+        R.drawable.ic_holo_ics,
+        showOnlyIfInstalled = true
+    ),
+    LG_HOME("lg", "LG Home", arrayOf("com.lge.launcher2"), R.drawable.ic_lg_home),
+    LAWNCHAIR(
+        "lawnchair",
+        "Lawnchair",
+        arrayOf(
+            "app.lawnchair.play",
+            "ch.deletescape.lawnchair.plah",
+            "ch.deletescape.lawnchair",
+            "ch.deletescape.lawnchair.ci",
+            "ch.deletescape.lawnchair.dev",
+            "app.lawnchair"
+        ),
+        R.drawable.ic_lawnchair
+    ),
+    LINEAGE_OS(
+        "lineageos",
+        "LineageOS Theme Engine",
+        arrayOf(
+            "org.cyanogenmod.theme.chooser",
+            "org.cyanogenmod.theme.chooser2",
+            "com.cyngn.theme.chooser"
+        ),
+        R.drawable.ic_lineageos_theme_engine
+    ),
+    LUCID("lucid", "Lucid Launcher", arrayOf("com.powerpoint45.launcher"), R.drawable.ic_lucid),
+    MOTO(
+        "moto", "Moto Launcher", arrayOf(
+            "com.motorola.launcher3",
+            "com.motorola.personalize",
+            "com.motorola.moto.overlay.personalizelauncher",
+        ), R.drawable.ic_moto
+    ),
+    NIAGARA("niagara", "Niagara Launcher", arrayOf("bitpit.launcher"), R.drawable.ic_niagara),
+    NOVA("nova", "Nova Launcher", arrayOf("com.teslacoilsw.launcher"), R.drawable.ic_nova),
+    ONEPLUS("oneplus", "OnePlus Launcher", arrayOf("net.oneplus.launcher"), R.drawable.ic_oneplus),
+    PIXEL(
+        "pixel",
+        "Pixel Launcher",
+        arrayOf("com.google.android.apps.nexuslauncher"),
+        R.drawable.ic_pixel,
+        false
+    ),
+    POSIDON(
+        "posidon",
+        "Posidon Launcher",
+        arrayOf("posidon.launcher"),
+        R.drawable.ic_posidon,
+        showOnlyIfInstalled = true
+    ),
+    PROJECTIVY("projectivy", "Projectivy Launcher", arrayOf("com.spocky.projengmenu"), R.drawable.ic_projectivy),
+    SMART("smart", "Smart Launcher", arrayOf("ginlemon.flowerfree"), R.drawable.ic_smart),
+    SMART_PRO(
+        "smartpro",
+        "Smart Launcher Pro",
+        arrayOf("ginlemon.flowerpro"),
+        R.drawable.ic_smart_pro,
+        showOnlyIfInstalled = true
+    ),
+    SOLO(
+        "solo",
+        "Solo Launcher",
+        arrayOf("home.solo.launcher.free"),
+        R.drawable.ic_solo,
+        showOnlyIfInstalled = true
+    ),
+    SQUARE(
+        "square",
+        "Square Home Launcher",
+        arrayOf("com.ss.squarehome2"),
+        R.drawable.ic_square_home
+    ),
+    TSF(
+        "tsf",
+        "TSF Launcher",
+        arrayOf("com.tsf.shell"),
+        R.drawable.ic_tsf,
+        showOnlyIfInstalled = true
+    ),
+    YASAN(
+        "yasan",
+        "Yasan Launcher",
+        arrayOf("yasan.space.mnml.ai.launcher"),
+        R.drawable.ic_yasan
+    );
+
+    val cleanAppName: String
+        get() = appName.replace("launcher", "", true).clean().blueprintFormat()
+
+    fun hasPackage(packageName: String): Boolean {
+        packageNames.forEach { if (it.equals(packageName, true)) return true }
+        return false
+    }
+
+    fun isInstalled(context: Context?): Boolean {
+        context ?: return false
+        return packageNames.any { context.isAppInstalled(it) }
+    }
+
+    companion object {
+        fun getSupportedLaunchers(context: Context? = null): ArrayList<Pair<Launcher, Boolean>> {
+            val actuallySupportedLaunchers =
+                context?.stringArray(R.array.supported_launchers).orEmpty()
+            val default = values().sortedBy { it.appName }
+                .filter { def -> actuallySupportedLaunchers.any { sup -> sup == def.key } }
+            val pairs = default.map { Pair(it, it.isInstalled(context)) }
+                .filter { (launcher, installed) -> installed || !launcher.showOnlyIfInstalled }
+                .sortedByDescending { it.second }
+            return ArrayList(pairs)
+        }
+    }
+}

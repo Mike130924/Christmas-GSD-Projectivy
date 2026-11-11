@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<themeInfo>
+    <packageName>uk.neongalaxy.projectivy</packageName>
+    <versionName>1.3.0</versionName>
+    <versionCode>4</versionCode>
+    <themeName>Neon Galaxy</themeName>
+    <themePointColor>#00E5FF</themePointColor>
+    <themePreview img1="preview1" />
+    <preview img1="preview1" />
+</themeInfo>

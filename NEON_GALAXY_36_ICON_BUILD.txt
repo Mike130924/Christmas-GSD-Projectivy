@@ -1,0 +1,12 @@
+NEON GALAXY — 36 ICON PROJECT
+
+This project contains 36 app icon mappings for Projectivy Launcher.
+The seven additions are Rakuten TV, Projectivy Blueprint, Arcticons, Projectivy Weather, Overflight, Shizuku and ADB AppControl.
+
+Build with:
+  ./gradlew :app:assembleDebug
+
+Expected output:
+  app/build/outputs/apk/debug/*.apk
+
+The appfilter.xml and drawable.xml mappings are included in both assets and res/xml.
