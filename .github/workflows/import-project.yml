@@ -41,6 +41,12 @@ jobs:
           cp -a "$PROJECT_ROOT"/. .
 
           chmod +x ./gradlew
+
+          # The archive contains a build workflow. The current GitHub
+          # Actions token cannot create/update workflow files, so leave
+          # that file out of this import. We will add it separately.
+          rm -f .github/workflows/build.yml
+
           rm -f "$ARCHIVE"
 
       - name: Commit imported project
