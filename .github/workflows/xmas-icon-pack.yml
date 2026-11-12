@@ -1,0 +1,157 @@
+name: Build Xmas Icon Pack from uploaded source
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: xmas-icon-pack-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Extract the exact uploaded source ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARCHIVE="Xmas-Icon-Pack-Source.zip"
+          test -f "$ARCHIVE" || {
+            echo "::error::Missing $ARCHIVE in the repository root."
+            exit 1
+          }
+
+          mkdir -p "$RUNNER_TEMP/xmas-source"
+          unzip -q "$ARCHIVE" -d "$RUNNER_TEMP/xmas-source"
+          PROJECT_ROOT="$(find "$RUNNER_TEMP/xmas-source" -type f -name gradlew -print -quit | xargs -r dirname)"
+          test -n "$PROJECT_ROOT" || {
+            echo "::error::No Gradle project (gradlew) found inside the ZIP."
+            exit 1
+          }
+          test -f "$PROJECT_ROOT/settings.gradle" -o -f "$PROJECT_ROOT/settings.gradle.kts" || {
+            echo "::error::Gradle settings file missing from ZIP."
+            exit 1
+          }
+
+          # Replace the checked-out project completely. Do not merge with stale
+          # files from an earlier import/build. Keep the workflow definitions.
+          rsync -a --delete --exclude='/.git/' --exclude='/.github/' "$PROJECT_ROOT"/ ./
+          chmod +x ./gradlew
+
+      - name: Rebuild the icon-picker lists from the 50 appfilter mappings
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          appfilter = Path("app/src/main/res/xml/appfilter.xml")
+          assert appfilter.is_file(), "appfilter.xml missing"
+          root = ET.parse(appfilter).getroot()
+          names = [item.attrib["drawable"] for item in root.findall("item")]
+          assert len(names) == 50, f"Expected 50 appfilter mappings, found {len(names)}"
+          assert len(set(names)) == 50, "Duplicate appfilter drawable mapping"
+
+          drawable_xml = (
+              '<?xml version="1.0" encoding="utf-8"?>\n'
+              '<resources>\n'
+              '    <version>1</version>\n'
+              '    <category title="Christmas GSD" />\n'
+              + ''.join(f'    <item drawable="{name}" />\n' for name in names)
+              + '</resources>\n'
+          )
+          for path in (
+              Path("app/src/main/res/xml/drawable.xml"),
+              Path("app/src/main/assets/drawable.xml"),
+          ):
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(drawable_xml, encoding="utf-8")
+
+          def array(name, values):
+              return (
+                  f'    <string-array name="{name}">\n'
+                  + ''.join(f'        <item>{value}</item>\n' for value in values)
+                  + '    </string-array>\n'
+              )
+
+          icon_pack = Path("app/src/main/res/values/icon_pack.xml")
+          content = (
+              '<?xml version="1.0" encoding="utf-8"?>\n'
+              '<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">\n'
+              + array("icons_preview", names[:15])
+              + array("icon_filters", ["all"])
+              + array("all", names)
+              + '</resources>\n'
+          )
+          icon_pack.parent.mkdir(parents=True, exist_ok=True)
+          icon_pack.write_text(content, encoding="utf-8")
+
+          res = Path("app/src/main/res/drawable-nodpi")
+          missing = [
+              name for name in names
+              if not any((res / f"{name}.{ext}").is_file()
+                         for ext in ("webp", "png", "jpg", "jpeg"))
+          ]
+          assert not missing, "Missing icon artwork: " + ", ".join(missing)
+          print("Picker rebuilt: 50 entries matching 50 appfilter mappings and 50 image files.")
+          PY
+
+      - name: Verify the installed app label before building
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '<string name="app_name">Xmas-Icon Pack</string>' app/src/main/res/values/strings.xml
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Android SDK platform 36
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platform-tools"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-36"
+
+      - name: Build APK
+        run: ./gradlew :app:assembleDebug --stacktrace
+
+      - name: Rename and verify APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="$(find app/build/outputs/apk/debug -maxdepth 1 -type f -name '*.apk' -print -quit)"
+          test -n "$APK" || {
+            echo "::error::APK output not found."
+            exit 1
+          }
+
+          AAPT="$ANDROID_HOME/build-tools/$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -1)/aapt"
+          "$AAPT" dump badging "$APK" > "$RUNNER_TEMP/badging.txt"
+          grep -q "application-label:'Xmas-Icon Pack'" "$RUNNER_TEMP/badging.txt" || {
+            echo "::error::APK does not contain the expected installed app name."
+            cat "$RUNNER_TEMP/badging.txt"
+            exit 1
+          }
+
+          mkdir -p dist
+          cp "$APK" dist/Xmas-Icon-Pack-1.0.0.apk
+          echo "APK label verified: Xmas-Icon Pack"
+
+      - name: Upload installable APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Xmas-Icon-Pack
+          path: dist/Xmas-Icon-Pack-1.0.0.apk
+          if-no-files-found: error
+          retention-days: 30
