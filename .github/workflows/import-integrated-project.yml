@@ -19,7 +19,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          ARCHIVE="Christmas_GSD_Projectivy_Updated_Source_12_Icons.zip"
+          ARCHIVE="Christmas_GSD_Projectivy_Full_50_Gold_Christmas_Source_COMPACT.zip"
 
           if [[ ! -f "$ARCHIVE" ]]; then
             echo "::error::Could not find $ARCHIVE in the repository root."
