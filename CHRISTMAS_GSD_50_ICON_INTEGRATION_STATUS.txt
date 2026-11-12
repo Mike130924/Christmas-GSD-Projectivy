@@ -1,0 +1,7 @@
+Christmas GSD Projectivy — integration status
+Base: supplied Android project archive corresponding to repository commit ee4d154.
+Updated: 12 mapped drawable WebP resources using the 12 generated individual crops.
+Preserved: remaining mapped drawable resources and all 50 appfilter mappings.
+Validation: appfilter asset/res copies match; 50 drawable mappings found; no missing drawable resources.
+Build: not completed in this environment. Gradle wrapper attempted to download Gradle 9.6.0 but network DNS access to services.gradle.org was unavailable.
+Artwork note: the 12 replacement assets were cropped from generated contact-sheet artwork; manual brand-logo review is still recommended before public release.
